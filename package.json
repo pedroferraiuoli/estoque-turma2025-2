@@ -1,0 +1,31 @@
+{
+  "name": "estoque-turma2025-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viniciusbarc/estoque-turma2025-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/viniciusbarc/estoque-turma2025-2/issues"
+  },
+  "homepage": "https://github.com/viniciusbarc/estoque-turma2025-2#readme",
+  "devDependencies": {
+    "@types/readline-sync": "^1.4.8",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/node": "^24.10.0",
+    "readline-sync": "^1.4.10"
+  }
+}
