@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --coverage",
     "build": "tsc",
     "start": "node dist/index.js"
   },
@@ -21,11 +21,16 @@
   },
   "homepage": "https://github.com/viniciusbarc/estoque-turma2025-2#readme",
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/jest": "^30.0.0",
     "@types/readline-sync": "^1.4.8",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "@types/node": "^24.10.0",
+    "better-sqlite3": "^12.4.1",
     "readline-sync": "^1.4.10"
   }
 }

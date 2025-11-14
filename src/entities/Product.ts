@@ -1,4 +1,4 @@
-export class Product {
+export default class Product {
     private barcode: string;
     private name: string;
     private quantityInStock: number;
@@ -24,6 +24,10 @@ export class Product {
 
         const initialStock = 0;
         return new Product(barcode, name, initialStock, orderReferenceDays);
+    }
+
+    public static rebuild(barcode: string, name: string, quantityInStock: number, orderReferenceDays: number): Product {
+        return new Product(barcode, name, quantityInStock, orderReferenceDays);
     }
 
     public getBarcode(): string {

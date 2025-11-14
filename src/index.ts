@@ -1,18 +1,21 @@
-import { Product } from "./entities/Product.js";
+import Product from "./entities/Product.js";
 import readlineSync from "readline-sync";
+import { SqliteConnection } from "./repositories/SqliteConnection.js";
+import { ProductRepository } from "./repositories/ProductRepository.js";
+
+const sqliteConnection = new SqliteConnection("estoque.db");
+const productRepository = new ProductRepository(sqliteConnection);
 
 let barcode: string = readlineSync.question("Enter product barcode: ");
-let name: string = readlineSync.question("Enter product name: ");
-let orderReferenceDays = parseInt(readlineSync.question("Enter order reference days: "));
 
-const product = Product.create(barcode, name, orderReferenceDays);
+const product = productRepository.findByBarcode(barcode);
 
-if (product instanceof Error) {
-    console.error("Error creating product:", product.message);
-} else {
-    console.log("Product created successfully:");
+if (product instanceof Product) {
+    console.log("Product exist:");
     console.log("Barcode:", product.getBarcode());
     console.log("Name:", product.getName());
     console.log("Quantity in Stock:", product.getQuantityInStock());
     console.log("Order Reference Days:", product.getOrderReferenceDays());
+} else {
+    console.log("Product with barcode", barcode, "not found.");
 }

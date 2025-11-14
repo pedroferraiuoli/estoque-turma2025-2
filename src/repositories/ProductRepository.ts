@@ -1,0 +1,22 @@
+import Product from "../entities/Product.js";
+import { SqliteConnection } from "./SqliteConnection.js";
+
+export class ProductRepository {
+    private sqliteConnection: SqliteConnection;
+
+    constructor(sqliteConnection: SqliteConnection) {
+        this.sqliteConnection = sqliteConnection;
+    }
+
+    public findByBarcode(barcode: string): Product | null {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare("SELECT * FROM products WHERE barcode = ?");
+        const result = statement.get(barcode) as { barcode: string; name: string; quantity_in_stock: number; order_reference_days: number } | undefined;
+        if (result) {
+            const product = Product.rebuild(result.barcode, result.name, result.quantity_in_stock, result.order_reference_days);
+            return product;
+        } else {
+            return null;
+        }
+    }
+}
