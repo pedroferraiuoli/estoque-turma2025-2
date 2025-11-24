@@ -3,7 +3,7 @@ import readlineSync from "readline-sync";
 import { SqliteConnection } from "./repositories/SqliteConnection.js";
 import { ProductRepository } from "./repositories/ProductRepository.js";
 
-const sqliteConnection = new SqliteConnection("estoque.db");
+const sqliteConnection = new SqliteConnection("db/estoque.db");
 const productRepository = new ProductRepository(sqliteConnection);
 
 let barcode: string = readlineSync.question("Enter product barcode: ");
