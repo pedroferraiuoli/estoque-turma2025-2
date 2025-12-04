@@ -1,7 +1,7 @@
-import Product from "./entities/Product.js";
+import Product from "./entities/Product";
 import readlineSync from "readline-sync";
-import { SqliteConnection } from "./repositories/SqliteConnection.js";
-import { ProductRepository } from "./repositories/ProductRepository.js";
+import { SqliteConnection } from "./repositories/SqliteConnection";
+import { ProductRepository } from "./repositories/ProductRepository";
 
 const sqliteConnection = new SqliteConnection("estoque.db");
 const productRepository = new ProductRepository(sqliteConnection);

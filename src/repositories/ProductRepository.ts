@@ -1,5 +1,5 @@
-import Product from "../entities/Product.js";
-import { SqliteConnection } from "./SqliteConnection.js";
+import Product from "../entities/Product";
+import { SqliteConnection } from "./SqliteConnection";
 
 export class ProductRepository {
     private sqliteConnection: SqliteConnection;
