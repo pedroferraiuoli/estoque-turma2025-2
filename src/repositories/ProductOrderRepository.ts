@@ -1,0 +1,56 @@
+import ProductOrder from "../entities/ProductOrder";
+import { ProductRepository } from "./ProductRepository";
+import { SqliteConnection } from "./SqliteConnection";
+
+type ProductOrderRow = {
+    uuid: string;
+    product_fk: string;
+    quantity: number;
+    orderDate: string;
+};
+
+export class ProductOrderRepository {
+    constructor(
+        private readonly sqliteConnection: SqliteConnection,
+        private readonly productRepository: ProductRepository
+    ) {}
+
+    public findByUuid(uuid: string): ProductOrder | null {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare(`
+            SELECT uuid, product_fk, quantity, orderDate
+            FROM ProductOrder
+            WHERE uuid = ?
+        `);
+        const row = statement.get(uuid) as ProductOrderRow | undefined;
+        if (!row) {
+            return null;
+        }
+
+        const product = this.productRepository.findByBarcode(row.product_fk);
+        if (!product) {
+            throw new Error(`Related product ${row.product_fk} not found`);
+        }
+
+        return ProductOrder.rebuild(
+            row.uuid,
+            product,
+            row.quantity,
+            new Date(row.orderDate)
+        );
+    }
+
+    public save(productOrder: ProductOrder): void {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare(`
+            INSERT OR REPLACE INTO ProductOrder (uuid, product_fk, quantity, orderDate)
+            VALUES (?, ?, ?, ?)
+        `);
+        statement.run(
+            productOrder.getUuid(),
+            productOrder.getProduct().getBarcode(),
+            productOrder.getQuantity(),
+            productOrder.getOrderDate().toISOString()
+        );
+    }
+}
