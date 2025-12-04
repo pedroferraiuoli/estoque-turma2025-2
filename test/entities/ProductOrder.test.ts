@@ -4,7 +4,7 @@ import Product from '../../src/entities/Product';
 describe('Entidade ProductOrder', () => {
   
     test('Deve instanciar um objeto da classe ProductOrder quando os dados forem válidos', () => {
-        const product = Product.create('1234567890123', 'Coca Cola 2L', 14);
+        const product = Product.rebuild('1234567890123', 'Coca Cola 2L', 14, 7);
         const quantity: number = 10;
         const orderDate: Date = new Date('2025-11-13');
 
@@ -34,7 +34,7 @@ describe('Entidade ProductOrder', () => {
     });
 
     test('Deve retornar um erro quando a quantidade não for positiva', () => {
-        const product = Product.create('1234567890123', 'Coca Cola 2L', 14);
+        const product = Product.rebuild('1234567890123', 'Coca Cola 2L', 14, 7);
         const orderDate: Date = new Date('2025-11-13');
 
         if (product instanceof Product) {
@@ -49,7 +49,7 @@ describe('Entidade ProductOrder', () => {
     });
 
     test('Deve retornar um erro quando a data do pedido for inválida', () => {
-        const product = Product.create('1234567890123', 'Coca Cola 2L', 14);
+        const product = Product.rebuild('1234567890123', 'Coca Cola 2L', 14, 7);
         const quantity: number = 10;
         const orderDate: Date = new Date('invalid');
 

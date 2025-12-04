@@ -6,8 +6,8 @@ order_reference_days integer not null);
 
 create table ProductOrder(
 uuid text primary key,
-product text not null,
+product_fk text not null,
 quantity integer not null,
 orderDate text not null,
 
-foreign key (product) references products(barcode));
+foreign key (product_fk) references products(barcode));
