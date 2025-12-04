@@ -19,4 +19,18 @@ export class ProductRepository {
             return null;
         }
     }
+
+    public save(product: Product): void {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare(`
+            INSERT OR REPLACE INTO products (barcode, name, quantity_in_stock, order_reference_days)
+            VALUES (?, ?, ?, ?)
+        `);
+        statement.run(
+            product.getBarcode(),
+            product.getName(),
+            product.getQuantityInStock(),
+            product.getOrderReferenceDays()
+        );
+    }
 }
