@@ -1,3 +1,4 @@
+import { randomBytes } from "crypto";
 import Product from "../entities/Product";
 import { SqliteConnection } from "./SqliteConnection";
 
@@ -20,17 +21,22 @@ export class ProductRepository {
         }
     }
 
-    public save(product: Product): void {
+    public createProduct(product: Product): boolean {
         const connection = this.sqliteConnection.getConnection();
         const statement = connection.prepare(`
-            INSERT OR REPLACE INTO products (barcode, name, quantity_in_stock, order_reference_days)
+            INSERT INTO products (barcode, name, quantity_in_stock, order_reference_days)
             VALUES (?, ?, ?, ?)
         `);
-        statement.run(
-            product.getBarcode(),
+        const result = statement.run(product.getBarcode(),
             product.getName(),
             product.getQuantityInStock(),
             product.getOrderReferenceDays()
         );
+
+        if (result.changes > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
