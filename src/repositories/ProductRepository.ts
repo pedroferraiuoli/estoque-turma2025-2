@@ -1,4 +1,3 @@
-import { randomBytes } from "crypto";
 import Product from "../entities/Product";
 import { SqliteConnection } from "./SqliteConnection";
 

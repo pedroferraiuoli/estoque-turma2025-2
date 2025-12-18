@@ -9,7 +9,12 @@ type ProductOrderRow = {
     orderDate: string;
 };
 
-export class ProductOrderRepository {
+export interface ProductOrderRepositoryInterface {
+    findByUuid(uuid: string): ProductOrder | null;
+    save(productOrder: ProductOrder): void;
+}
+
+export class ProductOrderRepository implements ProductOrderRepositoryInterface {
     constructor(
         private readonly sqliteConnection: SqliteConnection,
         private readonly productRepository: ProductRepository
