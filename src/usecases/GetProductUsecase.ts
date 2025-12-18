@@ -10,10 +10,14 @@ export class GetProductUsecase {
     }
 
     public execute(barcode: string): Product | Error {
-        const product = this.productRepository.findByBarcode(barcode);
-        if (!product) {
-            return new Error("Product not found");
+        try {
+            const product = this.productRepository.findByBarcode(barcode);
+            if (!product) {
+                return new Error("Product not found");
+            }
+            return product;
+        } catch (error) {
+            return new Error("Error retrieving product");
         }
-        return product;
     }
 }

@@ -1,8 +1,8 @@
-import Product from "./entities/Product.js";
+import Product from "./entities/Product";
 import readlineSync from "readline-sync";
-import { SqliteConnection } from "./repositories/SqliteConnection.js";
-import { ProductRepository } from "./repositories/ProductRepository.js";
-import { CreateProductUsecase } from "./usecases/CreateProductUsecase.js";
+import { SqliteConnection } from "./repositories/SqliteConnection";
+import { ProductRepository } from "./repositories/ProductRepository";
+import { CreateProductUsecase } from "./usecases/CreateProductUsecase";
 
 const sqliteConnection = new SqliteConnection("db/estoque.db");
 const productRepository = new ProductRepository(sqliteConnection);
@@ -15,7 +15,7 @@ let orderReferenceDaysInput: number = parseInt(readlineSync.question("Enter orde
 const result = createProductUsecase.execute(barcodeInput, nameInput, orderReferenceDaysInput);
 
 if (result instanceof Product) {
-    console.log("Product exist:");
+    console.log("Product created:");
     console.log("Barcode:", result.getBarcode());
     console.log("Name:", result.getName());
     console.log("Quantity in Stock:", result.getQuantityInStock());
