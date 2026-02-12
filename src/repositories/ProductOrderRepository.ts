@@ -7,6 +7,7 @@ type ProductOrderRow = {
     product_fk: string;
     quantity: number;
     orderDate: string;
+    status: string;
 };
 
 export interface ProductOrderRepositoryInterface {
@@ -15,6 +16,7 @@ export interface ProductOrderRepositoryInterface {
 }
 
 export class ProductOrderRepository implements ProductOrderRepositoryInterface {
+
     constructor(
         private readonly sqliteConnection: SqliteConnection,
         private readonly productRepository: ProductRepository
@@ -22,12 +24,15 @@ export class ProductOrderRepository implements ProductOrderRepositoryInterface {
 
     public findByUuid(uuid: string): ProductOrder | null {
         const connection = this.sqliteConnection.getConnection();
+
         const statement = connection.prepare(`
-            SELECT uuid, product_fk, quantity, orderDate
-            FROM ProductOrder
+            SELECT uuid, product_fk, quantity, orderDate, status
+            FROM productOrder
             WHERE uuid = ?
         `);
+
         const row = statement.get(uuid) as ProductOrderRow | undefined;
+
         if (!row) {
             return null;
         }
@@ -41,21 +46,31 @@ export class ProductOrderRepository implements ProductOrderRepositoryInterface {
             row.uuid,
             product,
             row.quantity,
-            new Date(row.orderDate)
+            new Date(row.orderDate),
+            row.status
         );
     }
 
     public save(productOrder: ProductOrder): void {
         const connection = this.sqliteConnection.getConnection();
+
         const statement = connection.prepare(`
-            INSERT OR REPLACE INTO ProductOrder (uuid, product_fk, quantity, orderDate)
-            VALUES (?, ?, ?, ?)
+            INSERT OR REPLACE INTO productOrder (
+                uuid,
+                product_fk,
+                quantity,
+                orderDate,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?)
         `);
+
         statement.run(
             productOrder.getUuid(),
             productOrder.getProduct().getBarcode(),
             productOrder.getQuantity(),
-            productOrder.getOrderDate().toISOString()
+            productOrder.getOrderDate().toISOString(),
+            productOrder.getStatus()
         );
     }
 }
