@@ -3,7 +3,6 @@ import type { CreateProductOrderUsecase } from "../usecases/CreateProductOrderUs
 import ProductOrder from "../entities/ProductOrder";
 
 export class CreateProductOrderController {
-
     private createProductOrderUseCase: CreateProductOrderUsecase;
 
     constructor(createProductOrderUseCase: CreateProductOrderUsecase) {
@@ -11,17 +10,22 @@ export class CreateProductOrderController {
     }
 
     public async handle(request: FastifyRequest, response: FastifyReply): Promise<FastifyReply> {
-        const { barcode, quantity, orderDate } = request.body as { barcode: string; quantity: number; orderDate: Date; };
+        const { barcode, quantity, orderDate } = request.body as { barcode: string; quantity: number; orderDate: any; };
 
-        const result = this.createProductOrderUseCase.execute(barcode, quantity, orderDate);
+        const parsedDate = new Date(orderDate);
+
+        const result = this.createProductOrderUseCase.execute(barcode, quantity, parsedDate);
+
         if (result instanceof ProductOrder) {
             return response.status(201).send({
                 product: result.getProduct(),
                 quantity: result.getQuantity(),
-                orderDate: result.getOrderDate()
+                orderDate: result.getOrderDate(),
+                status: result.getStatus()
             });
         }
-        return response.status(400).send({ message: result.message });
+
+        const errorMessage = result instanceof Error ? result.message : "Unknown error";
+        return response.status(400).send({ message: errorMessage });
     }     
 }
-

@@ -46,12 +46,12 @@ describe('CreateProductOrderController', () => {
         expect(responseMock.data).toEqual({
             product: expect.any(Product),
             quantity: 20,
-            orderDate: orderDate
+            orderDate: orderDate,
+            status: 'opened'
         });
     });
 
     test('should return 400 if the usecase returns an ERROR', async () => {
-
         class CreateProductOrderUsecaseMock implements CreateProductOrderUsecaseInterface {
             execute(barcode: string, quantity: number, orderDate: Date): ProductOrder | Error {
                 return new Error('Product not found');

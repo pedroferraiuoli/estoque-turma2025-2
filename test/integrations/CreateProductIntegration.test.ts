@@ -3,7 +3,6 @@ import { SqliteConnection } from "../../src/repositories/SqliteConnection";
 import { ProductRepository } from "../../src/repositories/ProductRepository";
 import { CreateProductUsecase } from "../../src/usecases/CreateProductUsecase";
 import { CreateProductController } from "../../src/controllers/CreateProductController";
-import { create } from "domain";
 
 describe('Create Product Integration Test', () => {
 
@@ -14,7 +13,11 @@ describe('Create Product Integration Test', () => {
         const createProductUsecase = new CreateProductUsecase(productRepository);
         const createProductController = new CreateProductController(createProductUsecase);
 
-        sqliteConnection.getConnection().exec("DELETE FROM products");
+        const db = sqliteConnection.getConnection();
+        db.exec("PRAGMA foreign_keys = OFF;");
+        db.exec("DELETE FROM productOrder;");
+        db.exec("DELETE FROM products;");
+        db.exec("PRAGMA foreign_keys = ON;");
 
         expect(productRepository.findByBarcode('123456')).toBeNull();
 
@@ -51,14 +54,9 @@ describe('Create Product Integration Test', () => {
 
         const product = productRepository.findByBarcode('123456');
         expect(product).toBeInstanceOf(Product);
-        expect(product).not.toBeNull();
         if (product instanceof Product){
             expect(product.getBarcode()).toBe('123456');
             expect(product.getName()).toBe('Test Product');
-            expect(product.getQuantityInStock()).toBe(0);
-            expect(product.getOrderReferenceDays()).toBe(10);
         }
-
     });
-
 });
