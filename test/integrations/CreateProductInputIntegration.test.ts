@@ -55,7 +55,7 @@ describe("CreateProductInput Integration Test", () => {
         db.close();
     });
 
-    // ✅ Sucesso
+    // Sucesso
     test("should create a product input and update stock successfully", async () => {
         const request = makeRequestMock({
             productOrderId: "order-001",
@@ -85,7 +85,7 @@ describe("CreateProductInput Integration Test", () => {
         expect(createdInput.quantity).toBe(5);
     });
 
-    // ❌ Validações de entrada
+    // Validações de entrada
     test("should return 400 when productOrderId is missing", async () => {
         const request = makeRequestMock({ quantity: 5, inputDate: "2026-02-01T00:00:00.000Z" });
         const response = makeResponseMock();
@@ -146,7 +146,7 @@ describe("CreateProductInput Integration Test", () => {
         expect(response.data.error).toBe("Invalid input date format");
     });
 
-    // ❌ Regras de negócio
+    // Regras de negócio
     test("should return 404 when productOrder is not found", async () => {
         const request = makeRequestMock({ productOrderId: "non-existent-order", quantity: 5, inputDate: "2026-02-01T00:00:00.000Z" });
         const response = makeResponseMock();
