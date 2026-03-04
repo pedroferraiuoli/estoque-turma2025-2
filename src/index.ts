@@ -10,6 +10,8 @@ import { CreateProductOrderController } from "./controllers/CreateProductOrderCo
 import { CreateProductInputController } from "./controllers/CreateProductInputController";
 import fastify from "fastify";
 import { CreateProductOutputController } from "./controllers/CreateProductOutputController";
+import { DeleteProductInputController } from "./controllers/DeleteProductInputController";
+import { DeleteProductOutputController } from "./controllers/DeleteProductOutputController";
 
 const sqliteConnection = new SqliteConnection("db/estoque.db");
 
@@ -36,6 +38,10 @@ const createProductInputController = new CreateProductInputController();
 
 const createProductOutputController = new CreateProductOutputController();
 
+const deleteProductInputController = new DeleteProductInputController();
+
+const deleteProductOutputController = new DeleteProductOutputController();
+
 const app = fastify();
 
 app.post("/products", createProductController.handle.bind(createProductController));
@@ -59,6 +65,18 @@ app.post(
   "/product-outputs",
   createProductOutputController.handle.bind(createProductOutputController)
 );
+
+app.delete(
+  "/product-inputs/:productInputId",
+  deleteProductInputController.handle.bind(deleteProductInputController)
+);
+
+app.delete(
+  "/product-outputs/:productOutputId",
+  deleteProductOutputController.handle.bind(deleteProductOutputController)
+);
+
+
 
 app.listen({ port: 3000 }, (err, address) => {
   if (err) {

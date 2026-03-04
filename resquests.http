@@ -44,3 +44,8 @@ content-type: application/json
     "outputDate": "2026-02-28T00:00:00.000Z"
 }
 
+### requisição DELETE para deletar entrada do produto
+DELETE http://localhost:3000/product-inputs/9bde00e8-bc70-4960-817c-bd7e6aae6e2e
+
+### requisição DELETE para deletar saída do produto
+DELETE http://localhost:3000/product-outputs/cb372e87-0798-44a4-b4f7-788317125c0a
