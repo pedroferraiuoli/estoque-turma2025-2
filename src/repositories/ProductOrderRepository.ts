@@ -73,4 +73,5 @@ export class ProductOrderRepository implements ProductOrderRepositoryInterface {
             productOrder.getStatus()
         );
     }
+
 }
