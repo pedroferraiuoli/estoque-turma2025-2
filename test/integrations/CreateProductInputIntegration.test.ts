@@ -6,8 +6,10 @@ import { ProductOrderRepository } from "../../src/repositories/ProductOrderRepos
 import { ProductRepository } from "../../src/repositories/ProductRepository";
 import { SqliteConnection } from "../../src/repositories/SqliteConnection";
 
+// Caminho para o banco de dados de testes
 const DB_PATH = "db/estoque-testes.db";
 
+// Mocks simples para request e response
 const makeRequestMock = (body: object): any => ({
     body
 });
@@ -25,6 +27,7 @@ const makeResponseMock = (): any => ({
     }
 });
 
+// Função para limpar e popular o banco de dados de testes antes de cada teste
 const seedDatabase = (db: Database.Database) => {
     db.exec("PRAGMA foreign_keys = OFF;");
     db.exec("DELETE FROM productInput;");
@@ -40,15 +43,18 @@ const seedDatabase = (db: Database.Database) => {
     db.exec("PRAGMA foreign_keys = ON;");
 };
 
+// Testes de integração para o CreateProductInputController
 describe("CreateProductInput Integration Test", () => {
 
     let db: Database.Database;
     let controller: CreateProductInputController;
 
+    // Configuração do ambiente de testes antes de cada teste
     beforeEach(() => {
         db = new Database(DB_PATH);
         seedDatabase(db);
         
+        // Configuração realista do controller com repositórios conectados ao banco de dados de testes
         const sqliteConnection = new SqliteConnection(DB_PATH);
         const productRepository = new ProductRepository(sqliteConnection);
         const productOrderRepository = new ProductOrderRepository(sqliteConnection, productRepository);
@@ -61,6 +67,7 @@ describe("CreateProductInput Integration Test", () => {
         controller = new CreateProductInputController(createProductInputUseCase);
     });
 
+    // Limpeza do banco de dados após cada teste
     afterEach(() => {
         db.exec("PRAGMA foreign_keys = OFF;");
         db.exec("DELETE FROM productInput;");
@@ -70,7 +77,7 @@ describe("CreateProductInput Integration Test", () => {
         db.close();
     });
 
-    // Sucesso
+    // caminho feliz - cenário de criação de um product input, atualização do estoque e status do pedido, e retorno dos dados corretos na resposta
     test("should create a product input and update stock successfully", async () => {
         const request = makeRequestMock({
             productOrderId: "order-001",
@@ -100,7 +107,8 @@ describe("CreateProductInput Integration Test", () => {
         expect(createdInput.quantity).toBe(5);
     });
 
-    // Validações de entrada
+    // Caminhos tristes - validações de entrada, regras de negócio, e tratamento de erros inesperados como falhas de banco de dados
+    // Validações de entrada 
     test("should return 400 when productOrderId is missing", async () => {
         const request = makeRequestMock({ quantity: 5, inputDate: "2026-02-01T00:00:00.000Z" });
         const response = makeResponseMock();
@@ -161,7 +169,7 @@ describe("CreateProductInput Integration Test", () => {
         expect(response.data.error).toBe("Invalid input date format");
     });
 
-    // Regras de negócio
+    // Regras de negócio 
     test("should return 404 when productOrder is not found", async () => {
         const request = makeRequestMock({ productOrderId: "non-existent-order", quantity: 5, inputDate: "2026-02-01T00:00:00.000Z" });
         const response = makeResponseMock();
