@@ -1,9 +1,11 @@
 import { SqliteConnection } from "./repositories/SqliteConnection";
 import { ProductRepository } from "./repositories/ProductRepository";
 import { ProductOrderRepository } from "./repositories/ProductOrderRepository";
+import { ProductInputRepository } from "./repositories/ProductInputRepository";
 import { CreateProductUsecase } from "./usecases/CreateProductUsecase";
 import { GetProductUsecase } from "./usecases/GetProductUsecase";
 import { CreateProductOrderUsecase } from "./usecases/CreateProductOrderUsecase";
+import { CreateProductInputUseCase } from "./usecases/CreateProductInputUseCase";
 import { CreateProductController } from "./controllers/CreateProductController";
 import { GetProductController } from "./controllers/GetProductController";
 import { CreateProductOrderController } from "./controllers/CreateProductOrderController";
@@ -22,10 +24,16 @@ const productOrderRepository = new ProductOrderRepository(
   sqliteConnection,
   productRepository
 );
+const productInputRepository = new ProductInputRepository(sqliteConnection);
 
 const createProductUsecase = new CreateProductUsecase(productRepository);
 const getProductUsecase = new GetProductUsecase(productRepository);
 const createProductOrderUsecase = new CreateProductOrderUsecase(
+  productOrderRepository,
+  productRepository
+);
+const createProductInputUseCase = new CreateProductInputUseCase(
+  productInputRepository,
   productOrderRepository,
   productRepository
 );
@@ -35,12 +43,7 @@ const getProductController = new GetProductController(getProductUsecase);
 const createProductOrderController = new CreateProductOrderController(
   createProductOrderUsecase
 );
-
-const listProductsUsecase = new ListProductsUsecase(productRepository);
-
-const listProductsController = new ListProductsController(listProductsUsecase);
-
-const createProductInputController = new CreateProductInputController();
+const createProductInputController = new CreateProductInputController(createProductInputUseCase);
 
 const createProductOutputController = new CreateProductOutputController();
 
