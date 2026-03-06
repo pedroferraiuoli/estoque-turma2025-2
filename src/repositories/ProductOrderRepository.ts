@@ -13,7 +13,7 @@ type ProductOrderRow = {
 export interface ProductOrderRepositoryInterface {
     findByUuid(uuid: string): ProductOrder | null;
     save(productOrder: ProductOrder): void;
-    updateStatus(uuid: string, status: string): void;
+    updateStatus(productOrder: ProductOrder): void;
 }
 
 export class ProductOrderRepository implements ProductOrderRepositoryInterface {
@@ -75,9 +75,9 @@ export class ProductOrderRepository implements ProductOrderRepositoryInterface {
         );
     }
 
-    public updateStatus(uuid: string, status: string): void {
+    public updateStatus(productOrder: ProductOrder): void {
         const connection = this.sqliteConnection.getConnection();
         const statement = connection.prepare("UPDATE productOrder SET status = ? WHERE uuid = ?");
-        statement.run(status, uuid);
+        statement.run(productOrder.getStatus(), productOrder.getUuid());
     }
 }

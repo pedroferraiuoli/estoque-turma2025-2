@@ -14,8 +14,8 @@ export class ListProductsUsecase implements ListProductsUsecaseInterface {
 
   public execute(): Product[] | Error {
     try {
-      // const products = this.productRepository.listAll();
-      return Error("Method not implemented");
+      const products = this.productRepository.listAll();
+      return products;
     } catch (error) {
       return new Error("Error listing products");
     }

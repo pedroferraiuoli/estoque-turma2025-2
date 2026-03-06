@@ -5,6 +5,7 @@ export interface ProductRepositoryInterface {
     findByBarcode(barcode: string): Product | null;
     createProduct(product: Product): boolean;
     updateStock(barcode: string, newStock: number): void;
+    listAll(): Product[];
 }
 
 export class ProductRepository implements ProductRepositoryInterface {
@@ -46,9 +47,29 @@ export class ProductRepository implements ProductRepositoryInterface {
         return resultado;
     }
 
+    public listAll(): Product[] {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare("SELECT * FROM products");
+        const results = statement.all() as Array<{
+            barcode: string;
+            name: string;
+            quantity_in_stock: number;
+            order_reference_days: number;
+        }>;
+
+        return results.map((row) =>
+            Product.rebuild(
+                row.barcode,
+                row.name,
+                row.quantity_in_stock,
+                row.order_reference_days
+            )
+        );
+    }
+
     public updateStock(barcode: string, newStock: number): void {
         const connection = this.sqliteConnection.getConnection();
         const statement = connection.prepare("UPDATE products SET quantity_in_stock = ? WHERE barcode = ?");
         statement.run(newStock, barcode);
-    }
+    }    
 }

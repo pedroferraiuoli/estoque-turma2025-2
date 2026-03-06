@@ -31,13 +31,13 @@ describe("CreateProductInputController", () => {
     });
 
     test("should return 201 when product input is created successfully", async () => {
-        const product = Product.rebuild("123", "Test Product", 10, 7);
-        const productOrder = ProductOrder.rebuild("order-001", product, 5, new Date("2026-01-01"), "opened");
-        const productInput = ProductInput.create("order-001", 5, new Date("2026-02-01")) as ProductInput;
+        const productMock = Product.rebuild("123", "Test Product", 10, 7);
+        const productOrderMock = ProductOrder.rebuild("order-001", productMock, 5, new Date("2026-01-01"), "closed");
+        const productInputMock = ProductInput.create(productOrderMock.getUuid(), 5, new Date("2026-02-01")) as ProductInput;
 
         mockUseCase.execute.mockReturnValue({
-            productInput,
-            productOrder,
+            productInput: productInputMock,
+            productOrder: productOrderMock,
             newStock: 15
         });
 

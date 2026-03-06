@@ -1,5 +1,4 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import Product from "../entities/Product";
 import type { ListProductsUsecase } from "../usecases/ListProductsUsecase";
 
 export class ListProductsController {
@@ -10,7 +9,7 @@ export class ListProductsController {
   }
 
   public async handle(
-    _request: FastifyRequest,
+    request: FastifyRequest,
     response: FastifyReply
   ): Promise<FastifyReply> {
     const result = this.listProductsUsecase.execute();

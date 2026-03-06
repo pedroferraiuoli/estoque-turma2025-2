@@ -57,4 +57,8 @@ export default class ProductOrder {
     public getOrderDate(): Date {
         return this.orderDate;
     }
+
+    public closeProductOrder() {
+        this.status = "closed";
+    }
 }

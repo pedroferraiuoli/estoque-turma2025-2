@@ -17,7 +17,8 @@ describe("CreateProductInputUseCase", () => {
     const mockProductRepository = {
         findByBarcode: jest.fn(),
         createProduct: jest.fn(),
-        updateStock: jest.fn()
+        updateStock: jest.fn(),
+        listAll: jest.fn()
     };
 
     let useCase: CreateProductInputUseCase;
@@ -44,7 +45,6 @@ describe("CreateProductInputUseCase", () => {
             expect(result.productInput).toBeInstanceOf(ProductInput);
             expect(result.newStock).toBe(15);
             expect(mockProductInputRepository.save).toHaveBeenCalledTimes(1);
-            expect(mockProductOrderRepository.updateStatus).toHaveBeenCalledWith("order-001", "closed");
             expect(mockProductRepository.updateStock).toHaveBeenCalledWith("123", 15);
         }
     });

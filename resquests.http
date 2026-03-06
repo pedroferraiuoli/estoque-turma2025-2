@@ -5,8 +5,8 @@ POST http://localhost:3000/products
 content-type: application/json
 
 {
-    "barcode": "1234567890",
-    "name": "Coca Cola",
+    "barcode": "1234567899",
+    "name": "Guaravita",
     "orderReferenceDays": 30
 }
 
@@ -33,7 +33,7 @@ POST http://localhost:3000/product-inputs
 content-type: application/json
 
 {
-    "productOrderId": "52f5a2f7-bcde-46be-98a2-ff02fff913d4",
+    "productOrderId": "fbe5078f-93df-40d8-b533-acb455f94018",
     "quantity": 120,
     "inputDate": "2026-02-28T00:00:00.000Z"
 }
@@ -49,7 +49,7 @@ content-type: application/json
 }
 
 ### requisição DELETE para deletar entrada do produto
-DELETE http://localhost:3000/product-inputs/d1e679ff-bb29-4321-b71c-caead882403a
+DELETE http://localhost:3000/product-inputs/9831e1c3-2077-427b-8bc8-7dd0d7d106d4
 
 ### requisição DELETE para deletar saída do produto
-DELETE http://localhost:3000/product-outputs/1683e042-5f9b-497f-ab65-d2a79e2176bd
+DELETE http://localhost:3000/product-outputs/7a3fa9d7-ba87-40ca-8eac-22c388ff5e99

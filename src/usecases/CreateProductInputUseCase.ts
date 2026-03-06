@@ -46,7 +46,9 @@ export class CreateProductInputUseCase implements CreateProductInputUseCaseInter
             }
 
             this.productInputRepository.save(productInput);
-            this.productOrderRepository.updateStatus(productOrderId, "closed");
+            
+            productOrder.closeProductOrder();
+            this.productOrderRepository.updateStatus(productOrder);
             this.productRepository.updateStock(product.getBarcode(), newStock);
 
             return { productInput, productOrder, newStock };

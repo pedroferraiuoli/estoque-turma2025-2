@@ -22,42 +22,25 @@ import { CreateProductOutputUsecase } from "./usecases/CreateProductOutputUsecas
 const sqliteConnection = new SqliteConnection("db/estoque.db");
 
 const productRepository = new ProductRepository(sqliteConnection);
-const productOrderRepository = new ProductOrderRepository(
-  sqliteConnection,
-  productRepository
-);
+const productOrderRepository = new ProductOrderRepository(sqliteConnection,productRepository);
 const productInputRepository = new ProductInputRepository(sqliteConnection);
-
 const productOutputRepository = new ProductOutputRepository(sqliteConnection, productRepository);
 
 const createProductUsecase = new CreateProductUsecase(productRepository);
 const getProductUsecase = new GetProductUsecase(productRepository);
-const createProductOrderUsecase = new CreateProductOrderUsecase(
-  productOrderRepository,
-  productRepository
-);
-const createProductInputUseCase = new CreateProductInputUseCase(
-  productInputRepository,
-  productOrderRepository,
-  productRepository
-);
+const createProductOrderUsecase = new CreateProductOrderUsecase(productOrderRepository,productRepository);
+const createProductInputUseCase = new CreateProductInputUseCase(productInputRepository,productOrderRepository,productRepository);
+const createProductOutputUsecase = new CreateProductOutputUsecase(productOutputRepository,productRepository);
+const listProductsUsecase = new ListProductsUsecase(productRepository);
 
-const createProductOutputUsecase = new CreateProductOutputUsecase(
-    productOutputRepository,
-    productRepository
-);
 
 const createProductController = new CreateProductController(createProductUsecase);
 const getProductController = new GetProductController(getProductUsecase);
-const createProductOrderController = new CreateProductOrderController(
-  createProductOrderUsecase
-);
+const createProductOrderController = new CreateProductOrderController(createProductOrderUsecase);
 const createProductInputController = new CreateProductInputController(createProductInputUseCase);
-
 const createProductOutputController = new CreateProductOutputController(createProductOutputUsecase, productRepository);
-
+const listProductsController = new ListProductsController(listProductsUsecase);
 const deleteProductInputController = new DeleteProductInputController();
-
 const deleteProductOutputController = new DeleteProductOutputController();
 
 const app = fastify();
@@ -69,11 +52,11 @@ app.get(
   getProductController.handle.bind(getProductController)
 );
 
-/* app.get(
+app.get(
   "/products",
-  ListProductsController.handle.bind(ListProductsController)
+  listProductsController.handle.bind(listProductsController)
 );
-*/
+
 
 app.post(
   "/product-orders",
