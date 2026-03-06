@@ -51,7 +51,7 @@ export class CreateProductInputController {
                 productInputDate: productInput.getInputDate().toISOString(),
                 productOrderId: productOrder.getUuid(),
                 productOrderDate: productOrder.getOrderDate().toISOString(),
-                productOrderStatus: "closed",
+                productOrderStatus: productOrder.getStatus(),
                 productBarcode: product.getBarcode(),
                 productName: product.getName(),
                 productStock: newStock

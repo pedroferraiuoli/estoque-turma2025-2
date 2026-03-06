@@ -33,7 +33,7 @@ POST http://localhost:3000/product-inputs
 content-type: application/json
 
 {
-    "productOrderId": "50e48cfa-d3c4-4025-bbcc-16b6ad8217bb",
+    "productOrderId": "52f5a2f7-bcde-46be-98a2-ff02fff913d4",
     "quantity": 120,
     "inputDate": "2026-02-28T00:00:00.000Z"
 }
