@@ -19,7 +19,6 @@ export class CreateProductOutputController {
         const result = this.createProductOutputUsecase.execute(barcode, quantity, new Date(outputDate));
 
         if (result instanceof Error) {
-            console.log("Error creating product output:", result);
             return response.status(400).send({ error: result.message });
         }
 

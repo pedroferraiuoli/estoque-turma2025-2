@@ -16,6 +16,8 @@ import { DeleteProductInputController } from "./controllers/DeleteProductInputCo
 import { DeleteProductOutputController } from "./controllers/DeleteProductOutputController";
 import { ListProductsUsecase } from "./usecases/ListProductsUsecase";
 import { ListProductsController } from "./controllers/ListProductsController";
+import { ProductOutputRepository } from "./repositories/ProductOutputRepository";
+import { CreateProductOutputUsecase } from "./usecases/CreateProductOutputUsecase";
 
 const sqliteConnection = new SqliteConnection("db/estoque.db");
 
@@ -25,6 +27,8 @@ const productOrderRepository = new ProductOrderRepository(
   productRepository
 );
 const productInputRepository = new ProductInputRepository(sqliteConnection);
+
+const productOutputRepository = new ProductOutputRepository(sqliteConnection, productRepository);
 
 const createProductUsecase = new CreateProductUsecase(productRepository);
 const getProductUsecase = new GetProductUsecase(productRepository);
@@ -38,6 +42,11 @@ const createProductInputUseCase = new CreateProductInputUseCase(
   productRepository
 );
 
+const createProductOutputUsecase = new CreateProductOutputUsecase(
+    productOutputRepository,
+    productRepository
+);
+
 const createProductController = new CreateProductController(createProductUsecase);
 const getProductController = new GetProductController(getProductUsecase);
 const createProductOrderController = new CreateProductOrderController(
@@ -45,7 +54,7 @@ const createProductOrderController = new CreateProductOrderController(
 );
 const createProductInputController = new CreateProductInputController(createProductInputUseCase);
 
-const createProductOutputController = new CreateProductOutputController();
+const createProductOutputController = new CreateProductOutputController(createProductOutputUsecase, productRepository);
 
 const deleteProductInputController = new DeleteProductInputController();
 
@@ -60,10 +69,11 @@ app.get(
   getProductController.handle.bind(getProductController)
 );
 
-app.get(
+/* app.get(
   "/products",
-  listProductsController.handle.bind(listProductsController)
+  ListProductsController.handle.bind(ListProductsController)
 );
+*/
 
 app.post(
   "/product-orders",

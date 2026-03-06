@@ -44,7 +44,7 @@ content-type: application/json
 
 {
     "barcode": "1234567899",
-    "quantity": 1,
+    "quantity": 2,
     "outputDate": "2026-02-28T00:00:00.000Z"
 }
 
