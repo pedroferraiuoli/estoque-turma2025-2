@@ -38,6 +38,9 @@ describe("DeleteProductOutputUseCase", () => {
         expect(result).not.toBeInstanceOf(Error);
         expect(mockOutputRepo.delete).toHaveBeenCalledWith("output-001");
         expect(mockProductRepo.updateStock).toHaveBeenCalledWith("123", 15);
+        expect(result).toEqual({
+            message: "Product output deleted successfully"
+        });
     });
 
     test("should return error if product output not found", () => {

@@ -23,7 +23,7 @@ POST http://localhost:3000/product-orders
 content-type: application/json
 
 {
-    "barcode": "1234567899",
+    "barcode": "1234567890",
     "quantity": 100,
     "orderDate": "2026-02-20T00:00:00.000Z"
 }
@@ -33,7 +33,7 @@ POST http://localhost:3000/product-inputs
 content-type: application/json
 
 {
-    "productOrderId": "fbe5078f-93df-40d8-b533-acb455f94018",
+    "productOrderId": "696a29bc-ea0f-4cf2-993e-9676a3062efd",
     "quantity": 120,
     "inputDate": "2026-02-28T00:00:00.000Z"
 }
@@ -43,13 +43,13 @@ POST http://localhost:3000/product-outputs
 content-type: application/json
 
 {
-    "barcode": "1234567899",
+    "barcode": "1234567890",
     "quantity": 2,
     "outputDate": "2026-02-28T00:00:00.000Z"
 }
 
 ### requisição DELETE para deletar entrada do produto
-DELETE http://localhost:3000/product-inputs/9831e1c3-2077-427b-8bc8-7dd0d7d106d4
+DELETE http://localhost:3000/product-inputs/aafdd4cc-726a-440c-b531-b97ad0384b79
 
 ### requisição DELETE para deletar saída do produto
-DELETE http://localhost:3000/product-outputs/7a3fa9d7-ba87-40ca-8eac-22c388ff5e99
+DELETE http://localhost:3000/product-outputs/012b7e13-26f4-432e-a00a-d03178fbd31b

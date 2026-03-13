@@ -66,7 +66,7 @@ describe("DeleteProductOutputController", () => {
         expect(response.statusCode).toBe(404);
     });
 
-    test("should return 500 on internal error", async () => {
+    test("should return 500 on internal error via exception", async () => {
         mockUseCase.execute.mockImplementation(() => { throw new Error("Internal server error"); });
 
         const request = makeRequestMock({ productOutputId: "output-002" });
@@ -77,5 +77,29 @@ describe("DeleteProductOutputController", () => {
         expect(response.statusCode).toBe(500);
         expect(response.data.error).toBe("Internal server error");
     });
+
+    test("should return 500 on internal error", async () => {
+        mockUseCase.execute.mockImplementation(() => { return new Error("Internal server error"); });
+
+        const request = makeRequestMock({ productOutputId: "output-002" });
+        const response = makeResponseMock();
+
+        await controller.handle(request, response);
+
+        expect(response.statusCode).toBe(500);
+        expect(response.data.error).toBe("Internal server error");
+    });    
+
+    test("should return 400 if usecase returns any message", async () => {
+        mockUseCase.execute.mockImplementation(() => { return new Error("lalala"); });
+
+        const request = makeRequestMock({ productOutputId: "output-002" });
+        const response = makeResponseMock();
+
+        await controller.handle(request, response);
+
+        expect(response.statusCode).toBe(400);
+        expect(response.data.error).toBe("lalala");
+    });      
 
 });

@@ -23,8 +23,7 @@ export class DeleteProductOutputUseCase implements DeleteProductOutputUseCaseInt
 
             const product = productOutput.getProduct();
 
-            const newStock =
-                product.getQuantityInStock() + productOutput.getQuantity();
+            const newStock = product.getQuantityInStock() + productOutput.getQuantity();
 
             this.productOutputRepository.delete(productOutputId);
 

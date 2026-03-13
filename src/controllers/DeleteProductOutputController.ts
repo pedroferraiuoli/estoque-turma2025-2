@@ -7,24 +7,17 @@ export class DeleteProductOutputController {
         private deleteProductOutputUseCase: DeleteProductOutputUseCaseInterface
     ) { }
 
-    public async handle(
-        request: FastifyRequest,
-        response: FastifyReply
-    ): Promise<FastifyReply> {
+    public async handle(request: FastifyRequest, response: FastifyReply): Promise<FastifyReply> {
 
-        const { productOutputId } =
-            request.params as { productOutputId: string };
+        const { productOutputId } = request.params as { productOutputId: string };
 
         if (!productOutputId) {
-            return response
-                .status(400)
-                .send({ error: "Product output ID is required" });
+            return response.status(400).send({ error: "Product output ID is required" });
         }
 
         try {
 
-            const result =
-                this.deleteProductOutputUseCase.execute(productOutputId);
+            const result = this.deleteProductOutputUseCase.execute(productOutputId);
 
             if (result instanceof Error) {
 
