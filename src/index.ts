@@ -23,6 +23,9 @@ import { ProductOutputRepository } from "./repositories/ProductOutputRepository"
 import { CreateProductOutputUsecase } from "./usecases/CreateProductOutputUsecase";
 import { DeleteProductOutputUseCase } from "./usecases/DeleteProductOutputUsecase";
 import { DeleteProductOrderController } from "./controllers/DeleteProductOrderController";
+import { ListProductOrdersUsecase } from "./usecases/ListProductOrdersUsecase";
+import { ListProductOrderController } from "./controllers/ListProductOrderController";
+import { GetProductOrderController } from "./controllers/GetProductOrderController";
 
 const sqliteConnection = new SqliteConnection("db/estoque.db");
 
@@ -39,6 +42,7 @@ const deleteProductInputUseCase = new DeleteProductInputUseCase(productInputRepo
 const deleteProductOutputUseCase = new DeleteProductOutputUseCase(productOutputRepository, productRepository);
 const createProductOutputUsecase = new CreateProductOutputUsecase(productOutputRepository,productRepository);
 const listProductsUsecase = new ListProductsUsecase(productRepository);
+const listProductOrdersUsecase = new ListProductOrdersUsecase(productOrderRepository);
 
 
 const createProductController = new CreateProductController(createProductUsecase);
@@ -51,6 +55,8 @@ const deleteProductInputController = new DeleteProductInputController(deleteProd
 const deleteProductOutputController = new DeleteProductOutputController(deleteProductOutputUseCase);
 
 const deleteProductOrderController = new DeleteProductOrderController();
+const listProductOrderController = new ListProductOrderController(listProductOrdersUsecase);
+const getProductOrderController = new GetProductOrderController(productOrderRepository);
 
 const app = fastify();
 
@@ -64,6 +70,8 @@ app.get("/products/:barcode",getProductController.handle.bind(getProductControll
 app.get("/products",listProductsController.handle.bind(listProductsController));
 
 app.post("/product-orders",createProductOrderController.handle.bind(createProductOrderController));
+app.get("/product-orders", listProductOrderController.handle.bind(listProductOrderController));
+app.get("/product-orders/:productOrderId", getProductOrderController.handle.bind(getProductOrderController));
 app.delete("/product-orders/:productOrderId", deleteProductOrderController.handle.bind(deleteProductOrderController));
 
 app.post("/product-inputs",createProductInputController.handle.bind(createProductInputController));
