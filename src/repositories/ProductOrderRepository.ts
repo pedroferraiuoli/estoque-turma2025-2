@@ -14,6 +14,7 @@ export interface ProductOrderRepositoryInterface {
     findByUuid(uuid: string): ProductOrder | null;
     save(productOrder: ProductOrder): void;
     updateStatus(productOrder: ProductOrder): void;
+    delete(uuid: string): void;
 }
 
 export class ProductOrderRepository implements ProductOrderRepositoryInterface {
@@ -79,5 +80,11 @@ export class ProductOrderRepository implements ProductOrderRepositoryInterface {
         const connection = this.sqliteConnection.getConnection();
         const statement = connection.prepare("UPDATE productOrder SET status = ? WHERE uuid = ?");
         statement.run(productOrder.getStatus(), productOrder.getUuid());
+    }
+
+    public delete(uuid: string): void {
+        const connection = this.sqliteConnection.getConnection();
+        const statement = connection.prepare("DELETE FROM productOrder WHERE uuid = ?");
+        statement.run(uuid);
     }
 }
